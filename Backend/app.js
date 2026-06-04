@@ -8,7 +8,7 @@ const userRoutes = require('./routes/user.routes.js');
 const captainRoutes = require('./routes/captain.routes.js');
 const cookieParser = require('cookie-parser');
 connectToDb();
-
+ 
 
 
 

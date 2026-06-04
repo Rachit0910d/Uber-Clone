@@ -7,18 +7,20 @@ const CaptainSignup = () => {
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [userData, setUserData] = useState({});
+  const [captainData, setCaptainData] = useState({});
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setUserData({
-      fullName:{
+    setCaptainData({
+      fullname:{
         firstname: firstname,
         lastname: lastname,
       },
       email: email,
       password: password
     })
+
+    axios.post(`${import.meta.env.VITE_BASE_URL}/captain/register`, captainData)
     
     setFirstname("");
     setLastname("");

@@ -1,30 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import image from "../assets/vecteezy_uber-logo-png-uber-icon-transparent-png_27127594.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
+import { UserDataContext } from "../context/UserContext.jsx";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    setUserData({
-      fullName:{
+    const newUser = {
+      fullname: {
         firstname: firstname,
         lastname: lastname,
       },
       email: email,
-      password: password
-    })
-    
-    setFirstname("");
-    setLastname("");
+      password: password,
+    };
+
+    const response = await Axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/register`,
+      newUser,
+    );
+
+    if (response.status === 201) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate("/home");
+    }
+
     setEmail("");
     setPassword("");
+    setLastname("");
+    setFirstname("");
   };
 
   return (
@@ -41,7 +58,7 @@ const UserSignup = () => {
               placeholder="Firstname"
               required
               value={firstname}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setFirstname(e.target.value);
               }}
               className="bg-[#eeeeee] w-1/2 font-medium rounded px-4 py-2 border text-base placeholder:text-sm"
@@ -51,7 +68,7 @@ const UserSignup = () => {
               type="text"
               placeholder="Lastname"
               value={lastname}
-              onChange={(e) =>{
+              onChange={(e) => {
                 setLastname(e.target.value);
               }}
               className="bg-[#eeeeee] w-1/2 font-medium rounded px-4 py-2 border text-base placeholder:text-sm"
@@ -64,9 +81,9 @@ const UserSignup = () => {
             placeholder="email@example.com"
             required
             value={email}
-              onChange={(e) =>{
-                setEmail(e.target.value);
-              }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             className="bg-[#eeeeee] mb-6 font-medium rounded px-4 py-2 border w-full text-base placeholder:text-sm"
           />
 
@@ -76,14 +93,14 @@ const UserSignup = () => {
             className="bg-[#eeeeee] mb-6 font-medium rounded px-4 py-2 border w-full text-base placeholder:text-sm"
             type="password"
             value={password}
-              onChange={(e) =>{
-                setPassword(e.target.value);
-              }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             placeholder="password"
             required
           />
 
-          <button className="bg-[#111] text-white mb-2 rounded px-4 py-2 font-semibold w-full text-base placeholder:text-sm ">
+          <button className="bg-[#111] text-white mb-2 rounded px-4 py-2 font-semibold w-full text-base cursor-pointer placeholder:text-sm ">
             Login
           </button>
         </form>

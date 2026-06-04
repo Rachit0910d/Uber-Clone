@@ -1,16 +1,31 @@
-import React from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useContext } from "react";
+import axios from "axios";
 
+export const CaptainDataContext = createContext();
 
+export const CaptainContext = ({ children }) => {
+  const [captain, setCaptain] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const updateCaptain = (captainData) => {
+    setCaptain(captainData);
+  };
 
-const CaptainContext = ({children}) => {
-    const navigate = useNavigate();
+  const value = {
+    captain,
+    setCaptain,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    updateCaptain,
+  };
 
   return (
-    <div>
-        {children}
-    </div>
-  )
-}
+    <CaptainDataContext.Provider value={value}>
+      {children}
+    </CaptainDataContext.Provider>
+  );
+};
 
-export default CaptainContext
+export default CaptainContext;

@@ -1,19 +1,35 @@
 import React, { useState } from "react";
 import image from "../assets/vecteezy_uber-logo-png-uber-icon-transparent-png_27127594.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/CaptainContext.jsx";
+import axios from "axios";
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captainData, setCaptainData] = useState({});
 
-  const submitHandler = (e) => {
+  const { captain, setCaptain } = React.useContext(CaptainDataContext);
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    setCaptainData({
+    const captain = {
       email: email,
-      password: password,
-    });
+      password,
+    };
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/captains/login`,
+      captain,
+    );
+
+    if (response.status === 200) {
+      const data = response.data;
+      setCaptain(data.captain);
+      localStorage.setItem("token", data.token);
+      navigate("/captain-home");
+    }
 
     setEmail("");
     setPassword("");
@@ -60,7 +76,10 @@ const CaptainLogin = () => {
       </div>
 
       <div>
-        <Link to="/login" className="bg-red-700 mb-3 flex items-center justify-center text-white rounded px-4 py-2 font-semibold w-full text-lg placeholder:text-base ">
+        <Link
+          to="/login"
+          className="bg-red-700 mb-3 flex items-center justify-center text-white rounded px-4 py-2 font-semibold w-full text-lg placeholder:text-base "
+        >
           Login as User
         </Link>
       </div>

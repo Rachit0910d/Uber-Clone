@@ -2,7 +2,7 @@ import React from "react";
 
 const WaitForDriver = (props) => {
   return (
-    <div className="flex flex-col gap-2 justify-between items-center h-screen">
+    <div className="flex flex-col gap-2 justify-between items-center">
       <h5
         onClick={() => {
           props.setWaitingForDriver(false);
@@ -12,35 +12,27 @@ const WaitForDriver = (props) => {
         <i className="text-3xl text-gray-500 ri-arrow-down-wide-line"></i>
       </h5>
 
-      {/* Driver Image Section */}
       <div className="w-full flex justify-center">
         <img
           src="https://img.freepik.com/free-photo/handsome-indian-young-man-looking-camera-while-sitting-car-man-wearing-white-t-shirt-glasses_1157-49929.jpg?semt=ais_hybrid&w=740&q=80"
           alt="driver"
-          className="h-64 w-64 rounded-full object-cover border-4 border-gray-300"
+          className="h-48 object-fit rounded-lg"
         />
       </div>
 
-      {/* Driver Details Section */}
-      <div className="w-full px-5 flex flex-col gap-5">
-        {/* Driver Info */}
-        <div className="bg-gray-100 rounded-lg p-5">
-          <h3 className="text-2xl font-bold mb-2">Raj Kumar</h3>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-lg font-semibold">4.9</span>
-            <span className="text-lg">⭐</span>
-            <span className="text-gray-600 text-sm">(2,450 rides)</span>
-          </div>
+      <div className="w-full px-5 flex flex-col gap-5 justify-start">
+        
+        <div className="bg-gray-100 items-center justify-between rounded-lg p-5">
+          <h4 className="text-2xl font-bold mb-2">Raj Kumar</h4>
+          
           <p className="text-gray-600 mb-2">
-            <span className="font-semibold">Vehicle:</span> White Toyota
-            Fortuner
+            <span className="font-semibold">Vehicle:</span> Motorcycle
           </p>
           <p className="text-gray-600">
             <span className="font-semibold">License Plate:</span> DL 01 AB 1234
           </p>
         </div>
 
-        {/* Message Box */}
         <div className="flex gap-3">
           <input
             type="text"
@@ -52,13 +44,6 @@ const WaitForDriver = (props) => {
           </button>
         </div>
 
-        {/* Call Button */}
-        <button className="w-full bg-green-500 text-white py-4 rounded-lg font-semibold text-lg hover:bg-green-600 transition flex items-center justify-center gap-3">
-          <i className="ri-phone-fill text-xl"></i>
-          Call Driver
-        </button>
-
-        {/* Trip Info */}
         <div className="bg-gray-50 rounded-lg p-4 flex justify-between">
           <div>
             <p className="text-gray-600 text-sm">Pickup</p>
@@ -73,7 +58,6 @@ const WaitForDriver = (props) => {
           </div>
         </div>
 
-        {/* Cancel Button */}
         <button className="w-full bg-red-100 text-red-600 py-3 rounded-lg font-semibold hover:bg-red-200 transition">
           Cancel Ride
         </button>

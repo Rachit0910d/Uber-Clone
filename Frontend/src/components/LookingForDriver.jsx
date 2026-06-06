@@ -17,7 +17,7 @@ const LookingForDriver = (props) => {
       <img
         src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=552/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy85NTM4NTEyZC1mZGUxLTRmNzMtYmQ1MS05Y2VmZjRlMjU0ZjEucG5n"
         alt="vehicle"
-        className="h-48  object-fit rounded-lg"
+        className="h-48 object-fit rounded-lg"
       />
 
       {/* Vehicle Details Section */}

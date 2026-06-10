@@ -409,3 +409,99 @@ Logs out the currently authenticated captain. This endpoint clears the `token` c
     "message": "Unauthorized"
   }
   ```
+
+---
+
+## Maps Endpoints
+
+All map endpoints require an authenticated user. Provide the JWT either as a `Bearer <token>` in the `Authorization` header or as the `token` cookie.
+
+### Get Coordinates
+**Endpoint:** `GET /maps/get-coordinates`
+
+**Description:** Returns coordinates for a provided address string.
+
+**Query Parameters:**
+- `address` (string) — required, min length 3
+
+**Auth:** required
+
+**Responses:**
+- **200 OK** — `{ latitude: <number>, longitude: <number>, formattedAddress: <string> }`
+- **400 Bad Request** — validation errors
+- **401 Unauthorized** — missing/invalid token
+
+### Get Distance & Time
+**Endpoint:** `GET /maps/get-distance-time`
+
+**Description:** Returns distance and duration between origin and destination.
+
+**Query Parameters:**
+- `origin` (string) — required, min length 3
+- `destination` (string) — required, min length 3
+
+**Auth:** required
+
+**Responses:**
+- **200 OK** — `{ distance: <number>, time: <number> }` (units depend on map service)
+- **400 Bad Request** — validation errors
+- **401 Unauthorized** — missing/invalid token
+
+### Autocomplete Suggestions
+**Endpoint:** `GET /maps/get-suggestions`
+
+**Description:** Returns place autocomplete suggestions for a partial input.
+
+**Query Parameters:**
+- `input` (string) — required, min length 3
+
+**Auth:** required
+
+**Responses:**
+- **200 OK** — `{ suggestions: [ ... ] }`
+- **400 Bad Request** — validation errors
+- **401 Unauthorized** — missing/invalid token
+
+---
+
+## Ride Endpoints
+
+All ride endpoints require an authenticated user. Provide the JWT either as a `Bearer <token>` in the `Authorization` header or as the `token` cookie.
+
+### Create Ride
+**Endpoint:** `POST /rides/create`
+
+**Description:** Creates a new ride for the authenticated user. Validates pickup, destination and vehicle type, computes fare, and returns the created ride.
+
+**Request Body (JSON):**
+```json
+{
+  "pickup": "123 Main Street",
+  "destination": "456 Park Avenue",
+  "vehicleType": "car"
+}
+```
+
+**Validation:**
+- `pickup` (string) — required, min length 3
+- `destination` (string) — required, min length 3
+- `vehicleType` (string) — required, one of `auto`, `car`, `motorcycle`
+
+**Auth:** required (`authUser` middleware)
+
+**Responses:**
+- **201 Created** — returns the created ride object (including `user`, `pickup`, `destination`, `fare`, etc.)
+- **400 Bad Request** — validation errors
+- **401 Unauthorized** — missing/invalid token
+- **500 Internal Server Error** — on server failures
+
+---
+
+## Authentication Notes
+- The backend supports sending the auth token either as a cookie named `token` (some login endpoints set this cookie) or in the request `Authorization` header using the `Bearer <token>` format.
+- The token is a JWT signed with the `JWT_SECRET` environment variable. Ensure `JWT_SECRET` is set in your Backend `.env` before starting the server.
+
+## Quick Postman Tips
+- For protected endpoints, add header `Authorization: Bearer <token>`.
+- Alternatively, set a cookie named `token` with the JWT.
+
